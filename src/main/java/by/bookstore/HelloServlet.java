@@ -1,4 +1,4 @@
-package by.bookstore.bookstore;
+package by.bookstore;
 
 import java.io.*;
 import javax.servlet.http.*;
