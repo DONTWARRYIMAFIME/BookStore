@@ -10,20 +10,27 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "categories")
-public class Categories {
+@Table(
+        name = "category",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "category_name_unique", columnNames = "name")
+        }
+)
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "category_id",
             unique = true,
+            updatable = false,
             nullable = false
     )
     private Long categoryId;
 
     @Column(
             name = "name",
+            length = 32,
             unique = true,
             nullable = false
     )
@@ -33,13 +40,13 @@ public class Categories {
             fetch = FetchType.LAZY,
             mappedBy = "category"
     )
-    private Set<Books> books = new HashSet<>(0);
+    private Set<Book> books = new HashSet<>(0);
 
-    public Categories(String name) {
+    public Category(String name) {
         this.name = name;
     }
 
-    public Categories(String name, Set<Books> books) {
+    public Category(String name, Set<Book> books) {
         this.name = name;
         this.books = books;
     }

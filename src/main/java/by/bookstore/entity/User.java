@@ -1,6 +1,5 @@
 package by.bookstore.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,21 +18,32 @@ import java.time.LocalDate;
                 @UniqueConstraint(name = "user_email_unique", columnNames = "email")
         }
 )
-public class Users {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "user_id",
-            nullable = false,
-            updatable = false
+            unique = true,
+            updatable = false,
+            nullable = false
     )
     private Long userId;
+
+    @Email
+    @NotEmpty(message = "Email cannot be empty")
+    @Column(
+            name = "email",
+            length = 128,
+            unique = true,
+            nullable = false
+    )
+    private String email;
 
     @NotBlank(message = "First name cannot be empty")
     @Column(
             name = "first_name",
-            columnDefinition = "TEXT",
+            length = 32,
             nullable = false
     )
     private String firstName;
@@ -41,10 +51,18 @@ public class Users {
     @NotBlank(message = "Last name cannot be empty")
     @Column(
             name = "last_name",
-            columnDefinition = "TEXT",
+            length = 64,
             nullable = false
     )
     private String lastName;
+
+    @NotBlank(message = "Phone number cannot be empty")
+    @Column(
+            name = "phone_number",
+            length = 24,
+            nullable = false
+    )
+    private String phoneNumber;
 
     @NotBlank(message = "Date of birth cannot be empty")
     @Column(
@@ -54,24 +72,6 @@ public class Users {
     )
     private LocalDate dob;
 
-    @Email
-    @NotEmpty(message = "Email cannot be empty")
-    @Column(
-            name = "email",
-            columnDefinition = "TEXT",
-            unique = true,
-            nullable = false
-    )
-    private String email;
-
-    @NotBlank(message = "Phone number cannot be empty")
-    @Column(
-            name = "phone_number",
-            columnDefinition = "TEXT",
-            nullable = false
-    )
-    private String phoneNumber;
-
     @Column(
             name = "image_url",
             columnDefinition = "TEXT"
@@ -80,18 +80,26 @@ public class Users {
 
     @Column(
             name = "password",
-            columnDefinition = "TEXT",
+            length = 64,
             nullable = false
     )
     private String password;
 
-    public Users(String firstName, String lastName, LocalDate dob, String email, String phoneNumber, String imageUrl, String password) {
+    public User(String email,
+                String firstName,
+                String lastName,
+                String phoneNumber,
+                LocalDate dob,
+                String imageUrl,
+                String password) {
+
+        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.dob = dob;
-        this.email = email;
         this.phoneNumber = phoneNumber;
+        this.dob = dob;
         this.imageUrl = imageUrl;
         this.password = password;
+
     }
 }

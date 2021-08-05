@@ -10,25 +10,26 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(
-        name = "books",
+        name = "book",
         uniqueConstraints = {
                 @UniqueConstraint(name = "book_title_unique", columnNames = "title")
         }
 )
-public class Books {
+public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "book_id",
             unique = true,
+            updatable = false,
             nullable = false
     )
     private Long bookId;
 
     @Column(
             name = "title",
-            columnDefinition = "TEXT",
+            length = 128,
             unique = true,
             nullable = false
     )
@@ -36,7 +37,7 @@ public class Books {
 
     @Column(
             name = "author",
-            columnDefinition = "TEXT",
+            length = 64,
             nullable = false
     )
     private String author;
@@ -50,7 +51,7 @@ public class Books {
 
     @Column(
             name = "isbn",
-            columnDefinition = "TEXT",
+            length = 32,
             nullable = false
     )
     private String isbn;
@@ -89,17 +90,17 @@ public class Books {
             name = "category_id",
             nullable = false
     )
-    private Categories category;
+    private Category category;
 
-    public Books(String title,
-                 String author,
-                 String description,
-                 String isbn,
-                 String imageUrl,
-                 Double price,
-                 LocalDateTime publishDateTime,
-                 LocalDateTime updateDateTime,
-                 Categories category) {
+    public Book(String title,
+                String author,
+                String description,
+                String isbn,
+                String imageUrl,
+                Double price,
+                LocalDateTime publishDateTime,
+                LocalDateTime updateDateTime,
+                Category category) {
 
         this.title = title;
         this.author = author;
