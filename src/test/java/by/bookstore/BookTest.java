@@ -1,19 +1,19 @@
 package by.bookstore;
 
-import by.bookstore.entity.Books;
-import by.bookstore.entity.Categories;
+import by.bookstore.entity.Book;
+import by.bookstore.entity.Category;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
 
-public class BooksTest {
+public class BookTest {
 
     public static void main(String[] args) {
-        Categories fantasy = new Categories("Fantasy");
+        Category fantasy = new Category("Science");
 
-        Books book1 = new Books();
+        Book book1 = new Book();
 
         book1.setTitle("Book's title");
         book1.setAuthor("Book's author");
@@ -37,7 +37,7 @@ public class BooksTest {
         entityManager.close();
         entityManagerFactory.close();
 
-        System.out.println("BOOKS_TEST: Transaction is completed successfully");
+        System.out.println("BOOK_TEST: Transaction is completed successfully");
 
     }
 

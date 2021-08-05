@@ -1,17 +1,17 @@
 package by.bookstore;
 
-import by.bookstore.entity.Categories;
+import by.bookstore.entity.Category;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class CategoriesTest {
+public class CategoryTest {
 
     public static void main(String[] args) {
-        Categories actionAndAdventure = new Categories("Action and Adventure");
-        Categories classics = new Categories("Classics");
-        Categories fantasy = new Categories("Fantasy");
+        Category actionAndAdventure = new Category("Action and Adventure");
+        Category classics = new Category("Classics");
+        Category fantasy = new Category("Fantasy");
 
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("BookStore");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -26,7 +26,7 @@ public class CategoriesTest {
         entityManager.close();
         entityManagerFactory.close();
 
-        System.out.println("CATEGORIES_TEST: Transaction is completed successfully");
+        System.out.println("CATEGORY_TEST: Transaction is completed successfully");
 
     }
 

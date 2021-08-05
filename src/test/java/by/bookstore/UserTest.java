@@ -1,6 +1,6 @@
 package by.bookstore;
 
-import by.bookstore.entity.Users;
+import by.bookstore.entity.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -8,10 +8,10 @@ import javax.persistence.Persistence;
 import java.time.LocalDate;
 import java.time.Month;
 
-public class UsersTest {
+public class UserTest {
 
     public static void main(String[] args) {
-        Users user1 = new Users();
+        User user1 = new User();
         user1.setFirstName("Ulas");
         user1.setLastName("Kastsiukovich");
         user1.setPhoneNumber("+375291747481");
@@ -20,7 +20,7 @@ public class UsersTest {
         user1.setImageUrl("/");
         user1.setPassword("12345678");
 
-        Users user2 = new Users();
+        User user2 = new User();
         user2.setFirstName("Artem");
         user2.setLastName("Marchenko");
         user2.setPhoneNumber("+375297778899");
@@ -39,7 +39,7 @@ public class UsersTest {
         entityManager.close();
         entityManagerFactory.close();
 
-        System.out.println("USERS_TEST: Transaction is completed successfully");
+        System.out.println("USER_TEST: Transaction is completed successfully");
 
     }
 
