@@ -5,39 +5,31 @@ import by.bookstore.entity.User;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public class UserDAO extends JpaDAO<User> implements GenericDAO<User, Long> {
+
+public class UserDAO extends JpaDAO<User, Long> {
 
     public UserDAO(EntityManager entityManager) {
         super(entityManager);
     }
 
-    @Override
-    public User create(User user) {
-        return super.create(user);
+    public User findById(Long id) {
+        return super.find(User.class, id);
     }
 
-    @Override
-    public User update(User user) {
-        return null;
+    public List<User> findAll() {
+        return super.findAll(User.class);
     }
 
-    @Override
-    public User get(Long id) {
-        return null;
-    }
-
-    @Override
-    public void delete(Long id) {
-
-    }
-
-    @Override
-    public List<User> listAll() {
-        return null;
-    }
-
-    @Override
     public long count() {
-        return 0;
+        return super.count(User.class);
     }
+
+    public void delete(Long id) {
+        super.delete(User.class, id);
+    }
+
+    public List<User> findWithQueryName(String queryName) {
+        return super.findWithQueryName(queryName);
+    }
+
 }

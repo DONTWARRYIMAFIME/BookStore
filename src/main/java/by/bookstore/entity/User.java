@@ -18,6 +18,16 @@ import java.time.LocalDate;
                 @UniqueConstraint(name = "user_email_unique", columnNames = "email")
         }
 )
+@NamedQueries({
+        @NamedQuery(
+                name = "User.findAll",
+                query = "SELECT u FROM User u ORDER BY u.firstName"
+        ),
+        @NamedQuery(
+                name = "User.count",
+                query = "SELECT Count(u) FROM User u"
+        )
+})
 public class User {
 
     @Id

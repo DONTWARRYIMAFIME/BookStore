@@ -4,16 +4,16 @@ import java.util.List;
 
 public interface GenericDAO<T, U> {
 
-    T create(T t);
+    T save(T t);
 
     T update(T t);
 
-    T get(U id);
+    T find(Class<T> type, U id);
 
-    void delete(U id);
+    List<T> findAll(Class<T> type);
 
-    List<T> listAll();
+    void delete(Class<T> type, U id);
 
-    long count();
+    long count(Class<T> type);
 
 }
