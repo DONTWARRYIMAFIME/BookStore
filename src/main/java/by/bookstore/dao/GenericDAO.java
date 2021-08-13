@@ -8,12 +8,12 @@ public interface GenericDAO<T, U> {
 
     T update(T t);
 
-    T find(Class<T> type, U id);
+    T findById(U id);
 
-    List<T> findAll(Class<T> type);
+    List<T> findAll();
 
-    void delete(Class<T> type, U id);
+    void delete(U id);
 
-    long count(Class<T> type);
+    long count();
 
 }

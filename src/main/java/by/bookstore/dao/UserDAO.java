@@ -4,6 +4,8 @@ import by.bookstore.entity.User;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 public class UserDAO extends JpaDAO<User, Long> {
@@ -12,24 +14,14 @@ public class UserDAO extends JpaDAO<User, Long> {
         super(entityManager);
     }
 
-    public User findById(Long id) {
-        return super.find(User.class, id);
-    }
-
-    public List<User> findAll() {
-        return super.findAll(User.class);
-    }
-
-    public long count() {
-        return super.count(User.class);
-    }
-
-    public void delete(Long id) {
-        super.delete(User.class, id);
-    }
-
     public List<User> findWithQueryName(String queryName) {
         return super.findWithQueryName(queryName);
+    }
+
+    public Optional<User> findByEmail(String email) {
+        List<User> users = super.findWithQueryName("User.findByEmail", Map.of("email", email));
+        User user = !users.isEmpty() ? users.get(0) : null;
+        return Optional.ofNullable(user);
     }
 
 }

@@ -1,17 +1,22 @@
 package by.bookstore.dao;
 
-import by.bookstore.entity.User;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Map;
 
 public class JpaDAO<T,U> implements GenericDAO<T,U> {
 
-    protected EntityManager entityManager;
+    private final Class<T> type;
+    private final EntityManager entityManager;
 
     public JpaDAO(EntityManager entityManager) {
         this.entityManager = entityManager;
+        this.type = (Class<T>)
+                ((ParameterizedType)getClass()
+                        .getGenericSuperclass())
+                        .getActualTypeArguments()[0];
     }
 
     @Override
@@ -38,7 +43,7 @@ public class JpaDAO<T,U> implements GenericDAO<T,U> {
     }
 
     @Override
-    public T find(Class<T> type, U id) {
+    public T findById(U id) {
         T entity = entityManager.find(type, id);
 
         if (entity != null)
@@ -48,13 +53,13 @@ public class JpaDAO<T,U> implements GenericDAO<T,U> {
     }
 
     @Override
-    public List<T> findAll(Class<T> type) {
-        Query query = entityManager.createQuery("SELECT u FROM " + type.getName() + " u");
+    public List<T> findAll() {
+        Query query = entityManager.createQuery("SELECT t FROM " + type.getName() + " t");
         return query.getResultList();
     }
 
     @Override
-    public void delete(Class<T> type, U id) {
+    public void delete(U id) {
         entityManager.getTransaction().begin();
 
         Object reference = entityManager.getReference(type, id);
@@ -64,13 +69,22 @@ public class JpaDAO<T,U> implements GenericDAO<T,U> {
     }
 
     @Override
-    public long count(Class<T> type) {
-        Query query = entityManager.createQuery("SELECT Count(u) FROM " + type.getName() + " u");
+    public long count() {
+        Query query = entityManager.createQuery("SELECT Count(t) FROM " + type.getName() + " t");
         return (long)query.getSingleResult();
     }
 
     public List<T> findWithQueryName(String queryName) {
         Query query = entityManager.createNamedQuery(queryName);
+        return query.getResultList();
+    }
+
+    public List<T> findWithQueryName(String queryName, Map<String, Object> parameters) {
+        Query query = entityManager.createNamedQuery(queryName);
+
+        for (Map.Entry<String, Object> entry : parameters.entrySet())
+            query.setParameter(entry.getKey(), entry.getValue());
+
         return query.getResultList();
     }
 

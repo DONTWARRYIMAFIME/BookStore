@@ -1,15 +1,18 @@
 package by.bookstore.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @Entity
 @Table(
@@ -26,6 +29,10 @@ import java.time.LocalDate;
         @NamedQuery(
                 name = "User.count",
                 query = "SELECT Count(u) FROM User u"
+        ),
+        @NamedQuery(
+                name = "User.findByEmail",
+                query = "SELECT u FROM User u WHERE u.email = :email"
         )
 })
 public class User {
@@ -74,7 +81,6 @@ public class User {
     )
     private String phoneNumber;
 
-    @NotBlank(message = "Date of birth cannot be empty")
     @Column(
             name = "dob",
             columnDefinition = "DATE",
@@ -111,5 +117,19 @@ public class User {
         this.imageUrl = imageUrl;
         this.password = password;
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+
+        return Objects.equals(userId, user.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return 562048007;
     }
 }
