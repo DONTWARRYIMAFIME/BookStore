@@ -5,12 +5,12 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "AdminHomeServlet", value = "/admin")
+@WebServlet(name = "AdminHomeServlet", value = "/admin/")
 public class AdminHomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String homePage = "view/admin/index.jsp";
+        String homePage = "index.jsp";
         RequestDispatcher dispatcher = request.getRequestDispatcher(homePage);
         dispatcher.forward(request, response);
     }

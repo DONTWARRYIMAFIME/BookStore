@@ -1,5 +1,5 @@
 <div align="center" >
-    <img src="view/img/book1.png" alt="cannot load picture" width="50px" height="50px">
+    <img src="../images/book1.png" alt="cannot load picture" width="50px" height="50px">
     <br>
 
     <div>
