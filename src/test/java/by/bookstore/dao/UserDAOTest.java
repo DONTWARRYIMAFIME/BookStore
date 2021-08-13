@@ -1,6 +1,7 @@
 package by.bookstore.dao;
 
 import by.bookstore.entity.User;
+import by.bookstore.exception.EmailDuplicationException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -158,6 +159,22 @@ class UserDAOTest {
         long count = userDAO.count();
         System.out.println("Count : " + count);
         assertTrue(count > 0);
+    }
+
+    @Test
+    void findByEmailValid() {
+        userDAO
+                .findByEmail("ulas.kastsiukovich@gmail.com")
+                .ifPresent((u) -> assertNotNull(u));
+    }
+
+    @Test
+    void findByEmailInvalid() {
+        boolean userExists = userDAO
+                .findByEmail("notexisting.email@gmail.com")
+                .isPresent();
+
+        assertFalse(userExists);
     }
 
     @AfterAll
