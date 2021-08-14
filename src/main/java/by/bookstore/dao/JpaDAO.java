@@ -43,7 +43,7 @@ public class JpaDAO<T,U> implements GenericDAO<T,U> {
     }
 
     @Override
-    public T findById(U id) {
+    public T find(U id) {
         T entity = entityManager.find(type, id);
 
         if (entity != null)

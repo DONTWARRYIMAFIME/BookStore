@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
@@ -6,17 +6,28 @@
 </head>
 <body>
 <jsp:directive.include file="header.jsp"/>
-
+<%--@elvariable id="user" type="by.bookstore.entity.User"--%>
 <div align="center">
-    <h2>Create/edit a User</h2>
+    <h2>
+
+        <c:if test="${user != null}">
+            Edit user's information
+        </c:if>
+        <c:if test="${user == null}">
+            Create a new user
+        </c:if>
+    </h2>
 </div>
 
 <div align="center">
-    <form method="post" action="create_user">
+    <form method="post"
+          <c:if test="${user != null}">action="update_user"</c:if>
+          <c:if test="${user == null}">action="create_user"</c:if>
+    >
 
         <c:if test="${user != null}">
         <label for="id">User's id</label>
-        <input id="id" name ="id" type="number" disabled value="${user.userId}">
+        <input id="id" name ="id" type="number" value="${user.userId}" readonly>
         <br />
         <br />
         </c:if>
@@ -52,7 +63,7 @@
         <br />
 
         <input type="submit" value="Save">
-        <input type="reset" value="Cancel" onclick="javascript:history.go(-1)">
+        <input type="reset" value="Cancel" onclick="history.go(-1)">
     </form>
 </div>
 

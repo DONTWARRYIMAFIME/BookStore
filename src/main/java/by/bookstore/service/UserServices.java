@@ -2,8 +2,10 @@ package by.bookstore.service;
 
 import by.bookstore.dao.UserDAO;
 import by.bookstore.entity.User;
+import by.bookstore.exception.AdminCouldNotBeDeletedException;
 import by.bookstore.exception.EmailDuplicationException;
 import by.bookstore.exception.UserNotFoundException;
+import by.bookstore.validation.UserValidation;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class UserServices {
 
@@ -59,14 +62,13 @@ public class UserServices {
         String imageUrl = request.getParameter("imageUrl");
         String password = request.getParameter("password");
 
-        System.out.println(email);
-        System.out.println(firstName);
-        System.out.println(lastName);
-        System.out.println(phoneNumber);
-        System.out.println(dob);
-        System.out.println(imageUrl);
-        System.out.println(password);
-        
+        boolean valid = UserValidation.validate();
+        if (!valid) {
+            /*
+                TODO: print message, that shows whats wrong with validation + throw exception about it
+             */
+        }
+
         boolean userExists = userDAO.findByEmail(email).isPresent();
 
         if (userExists) {
@@ -84,19 +86,18 @@ public class UserServices {
 
     }
 
-
     public void editUser() throws ServletException, IOException {
         Long userId = Long.parseLong(request.getParameter("id"));
-        User user = userDAO.findById(userId);
+        User user = Optional.ofNullable(userDAO.findById(userId).get()).orElse(null);
 
         if (user == null) {
+            String message = "Could not find user with ID " + userId;
+            request.setAttribute("message", message);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+            dispatcher.forward(request, response);
+
             throw new UserNotFoundException(userId);
         }
-
-        /*
-        Checking if is works by now
-         */
-        System.out.println(user.getFirstName() + " " + user.getLastName());
 
         request.setAttribute("user", user);
 
@@ -104,4 +105,83 @@ public class UserServices {
         RequestDispatcher dispatcher = request.getRequestDispatcher(editPage);
         dispatcher.forward(request, response);
     }
+
+    public void updateUser() throws ServletException, IOException {
+        Long userId = Long.parseLong(request.getParameter("id"));
+        String email = request.getParameter("email");
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String phoneNumber = request.getParameter("phoneNumber");
+        LocalDate dob = LocalDate.parse(request.getParameter("dob"));
+        String imageUrl = request.getParameter("imageUrl");
+        String password = request.getParameter("password");
+
+        /*
+            For debug purpose
+         */
+        System.out.println(userId);
+        System.out.println(email);
+        System.out.println(firstName);
+        System.out.println(lastName);
+        System.out.println(phoneNumber);
+        System.out.println(dob);
+        System.out.println(imageUrl);
+        System.out.println(password);
+
+        boolean valid = UserValidation.validate();
+        if (!valid) {
+            /*
+                TODO: print message, that shows whats wrong with validation + throw exception about it
+             */
+        }
+
+        User userByEmail = Optional
+                .ofNullable(userDAO.findByEmail(email).get())
+                .orElse(null);
+
+        if (userByEmail != null) {
+            if (!userByEmail.getUserId().equals(userId)) {
+                String message = "Could not update user. User with email " + email + " already exists";
+                request.setAttribute("message", message);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+                dispatcher.forward(request, response);
+
+                throw new EmailDuplicationException(email);
+            }
+        }
+
+        User user = new User(userId, email, firstName, lastName, phoneNumber, dob, imageUrl, password);
+        userDAO.update(user);
+        listUsers("User information updated successfully!");
+    }
+
+    public void deleteUser() throws ServletException, IOException {
+        Long userId = Long.parseLong(request.getParameter("id"));
+
+        if (userId == 1) {
+            String message = "The default admin user account cannot be deleted";
+            request.setAttribute("message", message);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+            dispatcher.forward(request, response);
+
+            throw new AdminCouldNotBeDeletedException();
+        }
+
+        boolean exists = userDAO
+                .findById(userId)
+                .isPresent();
+
+        if (!exists) {
+            String message = "Could not find user with ID " + userId;
+            request.setAttribute("message", message);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
+            dispatcher.forward(request, response);
+
+            throw new UserNotFoundException(userId);
+        }
+
+        userDAO.delete(userId);
+        listUsers("User has been deleted successfully");
+    }
+
 }

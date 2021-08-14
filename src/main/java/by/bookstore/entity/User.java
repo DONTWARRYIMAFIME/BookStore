@@ -14,6 +14,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(
         name = "users",
@@ -33,6 +34,10 @@ import java.util.Objects;
         @NamedQuery(
                 name = "User.findByEmail",
                 query = "SELECT u FROM User u WHERE u.email = :email"
+        ),
+        @NamedQuery(
+                name = "User.findByPhoneNumber",
+                query = "SELECT u FROM User u WHERE u.phoneNumber = :phoneNumber"
         )
 })
 public class User {

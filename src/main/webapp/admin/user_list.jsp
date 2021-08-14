@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
@@ -12,6 +12,7 @@
         <h3><a href="user_form.jsp">Create New User</a></h3>
     </div>
 
+    <%--@elvariable id="message" type="java.lang.String"--%>
     <c:if test="${message != null}">
     <div align="center">
         <h4>${message}</h4>
@@ -29,6 +30,7 @@
                 <th>DOB</th>
                 <th>Actions</th>
             </tr>
+            <%--@elvariable id="users" type="java.util.List"--%>
             <c:forEach var="user" items="${users}" varStatus="status">
                 <tr>
                     <td>${status.index + 1}</td>
@@ -39,7 +41,7 @@
                     <td>${user.dob}</td>
                     <td>
                         <a href="edit_user?id=${user.userId}">Edit</a> &nbsp;
-                        <a href="">Delete</a>
+                        <a href="javascript:confirmDelete(${user.userId})">Delete</a>
                     </td>
                 </tr>
             </c:forEach>
@@ -47,5 +49,6 @@
     </div>
 
     <jsp:directive.include file="footer.jsp"/>
+    <script src="../js/script.js"></script>
 </body>
 </html>

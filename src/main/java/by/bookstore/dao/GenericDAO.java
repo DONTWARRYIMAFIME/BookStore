@@ -8,7 +8,7 @@ public interface GenericDAO<T, U> {
 
     T update(T t);
 
-    T findById(U id);
+    T find(U id);
 
     List<T> findAll();
 

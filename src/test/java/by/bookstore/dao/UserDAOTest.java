@@ -100,17 +100,17 @@ class UserDAOTest {
     @Test
     void findByIdWithCorrectId() {
         long id = 2;
-        User user = userDAO.findById(id);
+        boolean exists = userDAO.findById(id).isPresent();
 
-        assertNotNull(user);
+        assertTrue(exists);
     }
 
     @Test
     void findByIdWithIncorrectId() {
         long id = -5;
-        User user = userDAO.findById(id);
+        boolean exists = userDAO.findById(id).isPresent();
 
-        assertNull(user);
+        assertFalse(exists);
     }
 
     @Test
@@ -118,8 +118,9 @@ class UserDAOTest {
         long id = 6;
         userDAO.delete(id);
 
-        User user = userDAO.findById(id);
-        assertNull(user);
+        boolean exists = userDAO.findById(id).isPresent();
+
+        assertFalse(exists);
     }
 
     @Test

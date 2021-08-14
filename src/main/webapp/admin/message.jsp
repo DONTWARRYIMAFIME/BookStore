@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--@elvariable id="message" type="java.lang.String"--%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Error message</title>
