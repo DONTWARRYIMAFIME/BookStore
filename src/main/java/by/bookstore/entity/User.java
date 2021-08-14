@@ -24,14 +24,6 @@ import java.util.Objects;
 )
 @NamedQueries({
         @NamedQuery(
-                name = "User.findAll",
-                query = "SELECT u FROM User u ORDER BY u.firstName"
-        ),
-        @NamedQuery(
-                name = "User.count",
-                query = "SELECT Count(u) FROM User u"
-        ),
-        @NamedQuery(
                 name = "User.findByEmail",
                 query = "SELECT u FROM User u WHERE u.email = :email"
         ),

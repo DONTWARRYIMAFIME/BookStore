@@ -1,7 +1,6 @@
 package by.bookstore.dao;
 
 import by.bookstore.entity.User;
-import by.bookstore.exception.EmailDuplicationException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -143,19 +142,6 @@ class UserDAOTest {
     }
 
     @Test
-    void customQueryFindAllUsers() {
-        List<User> users = userDAO.findWithQueryName("User.findAll");
-
-        if (users != null) {
-            for (User user : users) {
-                System.out.println(user);
-            }
-        }
-
-        assertNotNull(users);
-    }
-
-    @Test
     void countUsers() {
         long count = userDAO.count();
         System.out.println("Count : " + count);
@@ -176,6 +162,24 @@ class UserDAOTest {
                 .isPresent();
 
         assertFalse(userExists);
+    }
+
+    @Test
+    void findByPhoneNumberValid() {
+        boolean exists = userDAO
+                .findByPhoneNumber("+375291747481")
+                .isPresent();
+
+        assertTrue(exists);
+    }
+
+    @Test
+    void findByPhoneNumberInvalid() {
+        boolean exists = userDAO
+                .findByPhoneNumber("invalidNumber")
+                .isPresent();
+
+        assertFalse(exists);
     }
 
     @AfterAll

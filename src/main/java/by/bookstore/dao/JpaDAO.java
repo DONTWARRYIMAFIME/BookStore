@@ -5,6 +5,7 @@ import javax.persistence.Query;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class JpaDAO<T,U> implements GenericDAO<T,U> {
 
@@ -74,18 +75,18 @@ public class JpaDAO<T,U> implements GenericDAO<T,U> {
         return (long)query.getSingleResult();
     }
 
-    public List<T> findWithQueryName(String queryName) {
+    public Stream<T> findWithQueryName(String queryName) {
         Query query = entityManager.createNamedQuery(queryName);
-        return query.getResultList();
+        return query.getResultStream();
     }
 
-    public List<T> findWithQueryName(String queryName, Map<String, Object> parameters) {
+    public Stream<T> findWithQueryName(String queryName, Map<String, Object> parameters) {
         Query query = entityManager.createNamedQuery(queryName);
 
         for (Map.Entry<String, Object> entry : parameters.entrySet())
             query.setParameter(entry.getKey(), entry.getValue());
 
-        return query.getResultList();
+        return query.getResultStream();
     }
 
 }
