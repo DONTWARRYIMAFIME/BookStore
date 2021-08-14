@@ -1,13 +1,16 @@
 package by.bookstore.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @NoArgsConstructor
 @Table(
@@ -16,6 +19,12 @@ import java.util.Set;
                 @UniqueConstraint(name = "category_name_unique", columnNames = "name")
         }
 )
+@NamedQueries({
+        @NamedQuery(
+                name = "Category.findByName",
+                query = "SELECT c FROM Category c WHERE c.name = :name"
+        )
+})
 public class Category {
 
     @Id
@@ -40,6 +49,8 @@ public class Category {
             fetch = FetchType.LAZY,
             mappedBy = "category"
     )
+
+    @ToString.Exclude
     private Set<Book> books = new HashSet<>(0);
 
     public Category(String name) {
@@ -49,5 +60,19 @@ public class Category {
     public Category(String name, Set<Book> books) {
         this.name = name;
         this.books = books;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Category category = (Category) o;
+
+        return Objects.equals(categoryId, category.categoryId);
+    }
+
+    @Override
+    public int hashCode() {
+        return 1596826009;
     }
 }
